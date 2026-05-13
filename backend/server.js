@@ -16,7 +16,7 @@ connectDB();
 const app = express();
 
 app.use(cors({ 
-  origin: ['http://localhost:5173', 'https://ecommerce-mern.vercel.app'], 
+  origin: ['http://localhost:5173', 'https://ecommerce-mern-chl-pink.vercel.app'], 
   credentials: true 
 }));
 
