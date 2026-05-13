@@ -15,10 +15,21 @@ connectDB();
 
 const app = express();
 
-app.use(cors({ 
-  origin: ['http://localhost:5173', 'https://ecommerce-mern-chl-pink.vercel.app'], 
-  credentials: true 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'https://ecommerce-mern-chl-pink.vercel.app'
+  ],
+  credentials: true
 }));
+
+app.get('/', (req, res) => {
+  res.send('API is running...');
+});
 
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
@@ -30,4 +41,7 @@ app.use(notFound);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`);
+});
