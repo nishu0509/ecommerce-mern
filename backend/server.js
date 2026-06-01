@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use(cors({
-  origin: 'https://ecommerce-mern-chi-pink.vercel.app',
+  origin: /\.vercel\.app$/,
   credentials: true
 }));
 
