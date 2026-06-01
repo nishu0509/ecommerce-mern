@@ -21,6 +21,5 @@ A full-stack e-commerce web application built using the MERN stack with secure a
 **Payments:** Razorpay  
 **Image Storage:** Cloudinary
 
-## 👨‍💻 Author
-
-Nishu Yadav
+## 🔗 Live Demo
+[E-Shop](https://ecommerce-mern-chi-pink.vercel.app)
