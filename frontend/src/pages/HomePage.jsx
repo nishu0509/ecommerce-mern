@@ -77,15 +77,15 @@ const HomePage = () => {
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {filtered.map((p) => (
-            <div key={p._id} className="bg-white rounded-lg shadow-sm hover:shadow-md transition overflow-hidden">
-              <Link to={`/product/${p._id}`}>
+            <div key={p._id} className="bg-white rounded-lg shadow-sm hover:shadow-md transition overflow-hidden flex flex-col">
+              <Link to={`/product/${p._id}`} className="flex-1">
                 <div className="h-44 overflow-hidden bg-gray-50 flex items-center justify-center">
                   {p.image
                     ? <img src={p.image} alt={p.name} className="w-full h-full object-contain p-2" />
                     : <span className="text-5xl">📦</span>}
                 </div>
-                <div className="p-3">
-                  <p className="text-sm font-medium text-gray-800 line-clamp-2">{p.name}</p>
+                <div className="p-3 h-40 flex flex-col">
+                  <p className="text-sm font-medium text-gray-800 line-clamp-2 h-10">{p.name}</p>
                   <p className="text-xs text-gray-500 mt-1">{p.category}</p>
                   <div className="flex items-center gap-1 mt-1">
                     <span className="text-yellow-400 text-sm">★★★★☆</span>
