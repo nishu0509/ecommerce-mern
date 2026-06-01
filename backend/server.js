@@ -22,7 +22,7 @@ app.use(cookieParser());
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'https://ecommerce-mern-chl-pink.vercel.app'
+    'https://ecommerce-mern-chi-pink.vercel.app'
   ],
   credentials: true
 }));
