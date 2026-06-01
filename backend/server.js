@@ -21,7 +21,6 @@ app.use(cookieParser());
 
 app.use(cors({
   origin: '*',
-  credentials: false
 }));
 
 app.get('/', (req, res) => {
