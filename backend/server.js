@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use(cors({
-  origin: /\.vercel\.app$/,
+  origin: ['http://localhost:5173',/\.vercel\.app$/],
   credentials: true
 }));
 
