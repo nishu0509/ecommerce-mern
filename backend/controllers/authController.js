@@ -8,9 +8,10 @@ const generateToken = (res, id) => {
   res.cookie('jwt', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    sameSite: 'none',
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
+  return token;
 };
 
 export const register = asyncHandler(async (req, res) => {
@@ -22,8 +23,8 @@ export const register = asyncHandler(async (req, res) => {
   }
   const hashed = await bcrypt.hash(password, 10);
   const user = await User.create({ name, email, password: hashed });
-  generateToken(res, user._id);
-  res.status(201).json({ _id: user._id, name: user.name, email: user.email });
+  const token = generateToken(res, user._id);
+  res.status(201).json({ _id: user._id, name: user.name, email: user.email, token });
 });
 
 export const login = asyncHandler(async (req, res) => {
@@ -33,8 +34,8 @@ export const login = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error('Invalid credentials');
   }
-  generateToken(res, user._id);
-  res.json({ _id: user._id, name: user.name, email: user.email });
+  const token = generateToken(res, user._id);
+  res.json({ _id: user._id, name: user.name, email: user.email, token });
 });
 
 export const logout = (req, res) => {

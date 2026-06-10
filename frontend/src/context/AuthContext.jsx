@@ -14,6 +14,7 @@ export const AuthProvider = ({ children }) => {
         setUser(data);
       } catch {
         setUser(null);
+        localStorage.removeItem('token');
       } finally {
         setLoading(false);
       }
@@ -23,16 +24,19 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     const { data } = await axios.post('/auth/login', { email, password });
+    localStorage.setItem('token', data.token);
     setUser(data);
   };
 
   const register = async (name, email, password) => {
     const { data } = await axios.post('/auth/register', { name, email, password });
+    localStorage.setItem('token', data.token);
     setUser(data);
   };
 
   const logout = async () => {
     await axios.post('/auth/logout');
+    localStorage.removeItem('token');
     setUser(null);
   };
 

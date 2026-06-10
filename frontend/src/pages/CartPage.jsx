@@ -22,22 +22,37 @@ const CartPage = () => {
         order_id: data.id,
         handler: async (response) => {
           try {
-            const items = cartItems.map((i) => ({ product: i._id, quantity: i.quantity, price: i.price }));
+            await axios.post('/payment/verify', {
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            });
+            const items = cartItems.map((i) => ({
+              product: i._id,
+              quantity: i.quantity,
+              price: i.price,
+            }));
             await axios.post('/orders', { items, totalPrice });
             clearCart();
             toast.success('Payment successful! Order placed!');
             navigate('/orders');
           } catch (err) {
-            toast.error('Order failed after payment');
+            toast.error('Payment verification failed');
           }
         },
         prefill: { name: user.name, email: user.email },
         theme: { color: '#f59e0b' },
+        modal: {
+          ondismiss: () => toast.error('Payment cancelled'),
+        },
       };
       const rzp = new window.Razorpay(options);
+      rzp.on('payment.failed', (response) => {
+        toast.error(`Payment failed: ${response.error.description}`);
+      });
       rzp.open();
     } catch (err) {
-      toast.error('Payment failed');
+      toast.error(err.response?.data?.message || 'Payment initiation failed');
     }
   };
 
@@ -61,7 +76,6 @@ const CartPage = () => {
       <div className="max-w-5xl mx-auto px-4">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">Shopping Cart</h2>
         <div className="flex flex-col lg:flex-row gap-6">
-          {/* Cart Items */}
           <div className="flex-1 space-y-4">
             {cartItems.map((item) => (
               <div key={item._id} className="bg-white rounded-lg shadow-sm p-4 flex gap-4">
@@ -88,7 +102,6 @@ const CartPage = () => {
             ))}
           </div>
 
-          {/* Order Summary */}
           <div className="w-full lg:w-72">
             <div className="bg-white rounded-lg shadow-sm p-4">
               <p className="text-green-600 font-semibold mb-2">✅ Your order is eligible for FREE Delivery</p>
@@ -106,8 +119,7 @@ const CartPage = () => {
                 <span>Order Total</span>
                 <span>₹{totalPrice}</span>
               </div>
-              <button onClick={handlePayment}
-                className="w-full bg-yellow-400 hover:bg-yellow-500 text-black py-2.5 rounded-full font-semibold transition">
+              <button onClick={handlePayment} className="w-full bg-yellow-400 hover:bg-yellow-500 text-black py-2.5 rounded-full font-semibold transition">
                 Proceed to Pay
               </button>
             </div>
