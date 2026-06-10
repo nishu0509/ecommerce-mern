@@ -7,19 +7,27 @@ const router = express.Router();
 
 router.post('/create-order', protect, async (req, res) => {
   try {
+    console.log('KEY:', process.env.RAZORPAY_KEY_ID);
+    console.log('SECRET exists:', !!process.env.RAZORPAY_KEY_SECRET);
+    
     const razorpay = new Razorpay({
       key_id: process.env.RAZORPAY_KEY_ID,
       key_secret: process.env.RAZORPAY_KEY_SECRET,
     });
 
     const { amount } = req.body;
+    console.log('Amount received:', amount);
+    
     const order = await razorpay.orders.create({
       amount: amount * 100,
       currency: 'INR',
       receipt: `receipt_${Date.now()}`,
     });
+    
+    console.log('Order created:', order.id);
     res.json(order);
   } catch (err) {
+    console.log('Razorpay error:', err.message);
     res.status(500).json({ message: err.message });
   }
 });
