@@ -27,8 +27,8 @@ router.post('/create-order', protect, async (req, res) => {
     console.log('Order created:', order.id);
     res.json(order);
   } catch (err) {
-    console.log('Razorpay error:', err.message);
-    res.status(500).json({ message: err.message });
+    console.log('Razorpay error full:', JSON.stringify(err));
+    res.status(500).json({ message: err.message || JSON.stringify(err) });
   }
 });
 
